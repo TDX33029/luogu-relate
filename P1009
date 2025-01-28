@@ -1,0 +1,50 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+void CacheReset(int* pi);
+
+int main(void) {
+	int result[128] = { 0 };
+	int cache[128] = { 0 };
+	int cache_num = 0;
+	int digit = 0;
+	int circulate_num;
+	scanf("%d", &digit);
+	for (circulate_num = 1; circulate_num <= digit; circulate_num++) {
+		int circulate = 1;
+		cache_num = 1;
+		CacheReset(cache);
+		for (; circulate <= circulate_num; circulate++) {
+			cache_num *= circulate;
+		}
+		for (int slice = 0; slice<=127; slice++) {
+			if (cache_num >= 1) {
+				cache[slice] = cache_num % 10;
+				cache_num /= 10;
+			}else {
+				cache[slice] = 0;
+			}
+		}
+		for (int slice = 0; slice <= 127; slice++) {
+			result[slice] += cache[slice];
+			while (result[slice] >= 10) {
+				result[slice + 1] += 1;
+				result[slice] -= 10;
+			}
+		}
+	}
+	int slice = 127;
+	long _result = 0;
+		while (result[slice] == 0)
+			slice--;
+		for (; slice >= 0; slice--)
+			_result = _result * 10 + result[slice];
+		printf("%d", _result);
+
+return 0;
+}
+
+void CacheReset(int* pi) {
+	for (unsigned int cir = 0; cir <= 127; cir++)
+		*(pi + cir) = 0;
+}
