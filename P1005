@@ -1,0 +1,43 @@
+#include <stdio.h>
+
+int martix[2][3] = { 0 };
+int circulate = 1;
+unsigned int sum = 0;
+
+void process(int row_in,int line_in);
+int PowerProcess(void);
+
+int main(void) {
+	int row = 2;
+	int line = 3;
+	//Initialze and Input
+	for(int cir1 = 0;cir1<row;cir1++)
+		for (int cir2 = 0; cir2 < line; cir2++) {
+			scanf_s("%d", &martix[cir1][cir2]);
+		}
+	//
+	for (int cir3 = 0; cir3 < line; cir3++) {
+		for (int cir4 = 0; cir4 < row; cir4++) 
+			process(cir4, line - cir3);
+		circulate++;
+	}
+	printf("%d", sum);
+}
+	
+int PowerProcess(void) {
+	int value = 1;
+	for (int cir_pp1 = 0; cir_pp1 < circulate; cir_pp1++)
+		value *= 2;
+	return value;
+}
+
+void process(int row_in,int line_in) {
+	if (martix[row_in][line_in-1] > martix[row_in][0]) {
+		sum += martix[row_in][0] * PowerProcess();
+		for (int cir6 = 0; cir6 < line_in-1; cir6++) {
+			martix[row_in][cir6] = martix[row_in][cir6+1];
+		}
+	} else {
+		sum += martix[row_in][line_in-1] * PowerProcess();
+	}
+}
